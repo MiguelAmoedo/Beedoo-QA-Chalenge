@@ -1,0 +1,45 @@
+Feature: Curso Formulário de Inscrição
+
+  Scenario: Cadastro de curso com sucesso
+    Given que o administrador está na página de cadastro de cursos
+    When ele preenche todos os campos obrigatórios corretamente
+    And clica no botão "Enviar"
+    Then o curso deve ser criado com sucesso
+    And uma mensagem de sucesso deve ser exibida
+
+  Scenario: Falha no cadastro devido a campos obrigatórios não preenchidos
+    Given que o administrador está na página de cadastro de cursos
+    When ele tenta enviar o formulário sem preencher todos os campos obrigatórios
+    Then o sistema deve exibir mensagens de erro ao lado dos campos não preenchidos
+
+  Scenario: Falha no cadastro devido a data de fim anterior à data de início
+    Given que o administrador está na página de cadastro de cursos
+    When ele preenche a data de fim anterior à data de início
+    And clica no botão "Enviar"
+    Then o sistema deve exibir uma mensagem de erro indicando que a data de fim deve ser posterior à data de início
+
+  Scenario: Falha no cadastro devido ao número de vagas inválido
+    Given que o administrador está na página de cadastro de cursos
+    When ele preenche o campo "Número de vagas" com um valor negativo
+    And clica no botão "Enviar"
+    Then o sistema deve exibir uma mensagem de erro indicando que o número de vagas deve ser um número inteiro positivo
+
+  Scenario: Falha no cadastro devido a URL da imagem de capa inválida
+    Given que o administrador está na página de cadastro de cursos
+    When ele preenche o campo "URL da imagem de capa" com uma URL inválida
+    And clica no botão "Enviar"
+    Then o sistema deve exibir uma mensagem de erro indicando que a URL deve ser válida
+
+  Scenario: Falha no cadastro de curso presencial sem endereço
+    Given que o administrador está na página de cadastro de cursos
+    When ele seleciona "Presencial" no campo "Tipo de curso"
+    And não preenche o campo "Endereço"
+    And clica no botão "Enviar"
+    Then o sistema deve exibir uma mensagem de erro indicando que o campo "Endereço" é obrigatório para cursos presenciais
+
+  Scenario: Falha no cadastro de curso remoto sem link
+    Given que o administrador está na página de cadastro de cursos
+    When ele seleciona "Remoto" no campo "Tipo de curso"
+    And não preenche o campo "Link"
+    And clica no botão "Enviar"
+    Then o sistema deve exibir uma mensagem de erro indicando que o campo "Link" é obrigatório para cursos remotos
